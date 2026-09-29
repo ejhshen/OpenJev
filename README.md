@@ -1,6 +1,6 @@
 <div align="center">
 <h1>OpenJev-4B</h1>
-<p><strong>Open-vocabulary decisions. Explicit probabilities.</strong></p>
+<p><strong>Learning Open-Vocabulary Probabilistic Decision Models from Pretrained Language Models</strong></p>
 </div>
 
 ## 1. Introduction
