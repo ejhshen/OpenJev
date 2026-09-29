@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Prepare work/init and work/data first.
+# Download work/base-model and prepare work/data first.
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
 export PYTHONPATH="${PROJECT_ROOT}/src:${PYTHONPATH:-}"

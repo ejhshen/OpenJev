@@ -1,4 +1,4 @@
-"""Small contracts shared by assembly, training and runtime."""
+"""Small contracts shared by training and runtime."""
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
@@ -47,8 +47,6 @@ class DecisionBackboneAdapter(nn.Module, ABC):
 class ModelBackendSpec:
     backend_id: str
     adapter_api_version: int
-    match_source: Callable[[dict], bool]
-    prepare_source: Callable[..., dict]
     build_adapter: Callable[..., DecisionBackboneAdapter]
     capabilities: Callable[..., BackendCapabilities]
     training_layout: Callable[[DecisionBackboneAdapter], TrainingLayout]

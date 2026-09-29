@@ -1,7 +1,7 @@
 {
   "stage": "sft",
   "recipe": {
-    "model_artifact": "work/init",
+    "model_artifact": "work/base-model",
     "train_manifest": "work/data/sft-manifest.json",
     "output_dir": "work/sft",
     "eval_manifest": null,

@@ -35,11 +35,3 @@ def get_backend(name, adapter_api_version=1):
     if spec.adapter_api_version != adapter_api_version:
         raise ValueError(f"adapter API mismatch for {name}: artifact={adapter_api_version}, code={spec.adapter_api_version}")
     return spec
-
-
-def resolve_source(config, backend_id=None):
-    specs = [get_backend(backend_id)] if backend_id else [get_backend(n) for n in backend_ids()]
-    matches = [s for s in specs if s.match_source(config)]
-    if len(matches) != 1:
-        raise ValueError(f"expected one compatible backend; found {[s.backend_id for s in matches]}; specify --backend if ambiguous")
-    return matches[0]

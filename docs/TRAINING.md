@@ -4,7 +4,16 @@ The released training code retains the final model's SFT and REINFORCE-Analysis 
 
 ## Environment
 
-The validated setup is Python 3.12, PyTorch 2.11.0+cu129, Transformers 5.12.1, fla-core 0.5.2, and eight H200 GPUs. The prepared training image is `juliusshen/openjev-qwen35-train:20260924-validated`. When using an existing compatible environment, reuse its PyTorch, CUDA and verl installations.
+Start with the official [verl SGLang Docker environment](https://verl.readthedocs.io/en/latest/start/install.html#install-from-docker-image). The following example uses the official `verlai/verl` image:
+
+```bash
+docker pull verlai/verl:sgl055.latest
+docker run --rm -it --gpus all --shm-size=10g \
+  -v "$PWD:/workspace/openjev" -w /workspace/openjev \
+  verlai/verl:sgl055.latest bash
+```
+
+OpenJev's tested dependency versions are Python 3.12, PyTorch 2.11.0+cu129, Transformers 5.12.1 and fla-core 0.5.2. Use a compatible PyTorch/CUDA stack in the official environment and install the OpenJev dependencies below. The launch scripts default to eight GPUs.
 
 The FSDP2 wrapping, gradient clipping, checkpoint manager and sequence balancing are imported from verl. The validated source is [verl-agent](https://github.com/langfengQ/verl-agent) at commit `20bd331bdbc9026a5668e11362178e10ab7400c8`. Those imported utility files are unchanged from that upstream revision. For a new checkout:
 
@@ -12,22 +21,23 @@ The FSDP2 wrapping, gradient clipping, checkpoint manager and sequence balancing
 git clone https://github.com/langfengQ/verl-agent.git third_party/verl
 git -C third_party/verl checkout 20bd331bdbc9026a5668e11362178e10ab7400c8
 export PYTHONPATH="$PWD/src:$PWD/third_party/verl:${PYTHONPATH:-}"
-python -m pip install --no-deps -e .
+python -m pip install "transformers==5.12.1" "fla-core==0.5.2"
+python -m pip install -e ".[train]"
 bash training/check_imports.sh
 ```
 
-The import check reports the actual modules loaded and verifies the training helpers and FLA kernel. The container's existing dependency stack is used; the checkout itself is not copied into OpenJev. Outside the validated image, install the dependencies required by that verl revision as well as OpenJev's `train` extra. Inference does not depend on verl.
+The import check reports the loaded modules and dependency versions and verifies the training helpers and FLA kernel. The verl checkout remains an external dependency. Inference does not depend on verl.
 
-## Initialize the model
+## Load the starting model
 
-For training from the original backbone, download Qwen3.5-4B and build a new decision head. Do not initialize reproduction training from the already trained OpenJev-4B release.
+Training loads a complete OpenJev model artifact, including the backbone, decision head, tokenizer and configuration. To fine-tune the released model:
 
 ```bash
-hf download Qwen/Qwen3.5-4B --local-dir work/qwen35-base
-python -m openjev.cli prepare --model work/qwen35-base --output work/text-backbone
-python -m openjev.cli initialize --backbone work/text-backbone \
-  --config training/model.json --output work/init
+hf download shenjunhao/OpenJev-4B --local-dir work/base-model
+python -m openjev.cli validate-artifact work/base-model
 ```
+
+Set `recipe.model_artifact` in `training/sft.json` to use another complete OpenJev checkpoint. The two-stage pipeline starts SFT from that artifact and starts RL from the resulting SFT model.
 
 ## Prepare training data
 

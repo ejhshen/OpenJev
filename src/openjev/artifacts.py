@@ -125,8 +125,8 @@ def load_decision_artifact(path, *, device="cpu", dtype="bfloat16", verify_hashe
     from openjev.models.decision.model import OpenJevDecisionModel
     path = Path(path)
     manifest = load_manifest(path, verify_hashes=verify_hashes)
-    if manifest["stage"] == "text-prepared":
-        raise ValueError("prepared backbone has no decision head; run jevify")
+    if "decision_head.safetensors" not in manifest["files"]:
+        raise ValueError("expected a complete OpenJev artifact with a decision head")
     calibration = load_calibration(path, manifest)
     config = OpenJevConfig.from_dict(read_json(path / "openjev_config.json"))
     if (config.backend_id, config.adapter_api_version) != (manifest["backend_id"], manifest["adapter_api_version"]):

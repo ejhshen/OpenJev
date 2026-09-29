@@ -71,14 +71,12 @@ The output contains the selected candidate and probabilities, not generated reas
 
 Both stages are included: full-parameter **SFT → REINFORCE-Analysis**. The code retains the optimized FSDP2 engine, decision-level length packing, cross-rank token balancing, deferred synchronization, FLA gated-delta kernels, token caching and frozen-reference caching.
 
-The [training guide](docs/TRAINING.md) specifies the tested environment and pinned verl utilities. After checking dependencies, initialize from Qwen3.5-4B, prepare the public data and launch the fixed two-stage pipeline:
+The [training guide](docs/TRAINING.md) specifies the tested environment and pinned verl utilities. After checking dependencies, download OpenJev-4B, prepare the public data and launch the fixed two-stage fine-tuning pipeline:
 
 ```bash
 bash training/check_imports.sh
-hf download Qwen/Qwen3.5-4B --local-dir work/qwen35-base
-python -m openjev.cli prepare --model work/qwen35-base --output work/text-backbone
-python -m openjev.cli initialize --backbone work/text-backbone \
-  --config training/model.json --output work/init
+hf download shenjunhao/OpenJev-4B --local-dir work/base-model
+python -m openjev.cli validate-artifact work/base-model
 python -m openjev.training.prepare_data \
   --dataset shenjunhao/OpenJevData-140k \
   --mandatory-replay training/mandatory-replay.json --output work/data
