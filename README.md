@@ -1,6 +1,9 @@
 <div align="center">
 <h1>OpenJev-4B</h1>
 <p><strong>Learning Open-Vocabulary Probabilistic Decision Models from Pretrained Language Models</strong></p>
+<p>
+  <a href="https://huggingface.co/shenjunhao/OpenJev-4B"><img src="https://img.shields.io/badge/Hugging_Face-OpenJev--4B-ffd21e.svg" alt="Hugging Face model"></a>
+</p>
 </div>
 
 ## 1. Introduction
