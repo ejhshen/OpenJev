@@ -12,7 +12,7 @@
 
 The model combines a language-model backbone with a lightweight **Option Set Interactor** and a shared decision head. Its output dimension follows the candidate set supplied with each request: option names and optional criteria are inputs, rather than classes fixed in the model parameters. Decision probabilities are computed without autoregressive answer generation.
 
-OpenJev-4B is post-trained in two stages: **supervised fine-tuning (SFT)** followed by **REINFORCE-Analysis (REINFORCE-A)**. SFT establishes decision behavior using predominantly hard labels. RL increases the share of soft-target contexts and refines probability quality through sampled outcome feedback. A fixed subset of SFT contexts is replayed using the same RL objective.
+OpenJev-4B is post-trained on [OpenJevData-140k](https://huggingface.co/datasets/shenjunhao/OpenJevData-140k) in two stages: **supervised fine-tuning (SFT)** followed by **REINFORCE-Analysis (REINFORCE-A)**. SFT establishes decision behavior using predominantly hard labels. RL increases the share of soft-target contexts and refines probability quality through sampled outcome feedback.
 
 ## 2. Model Summary
 
