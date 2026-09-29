@@ -1,0 +1,14 @@
+{
+  "state": "The customer reports that a card payment appears twice on their statement. They recognize the merchant and made only one purchase.",
+  "questions": {
+    "route": {
+      "type": "choice",
+      "instructions": "Which team should handle this request?",
+      "criteria": {
+        "Duplicate payment": "The same purchase has been charged more than once.",
+        "Unrecognized payment": "The customer does not recognize the merchant or purchase.",
+        "Card delivery": "The customer is waiting for a physical card."
+      }
+    }
+  }
+}

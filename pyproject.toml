@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openjev"
+version = "0.1.0"
+description = "Open-vocabulary probabilistic decisions: inference, SFT and REINFORCE-Analysis"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["torch>=2.6", "transformers==5.12.1", "safetensors>=0.5", "numpy>=1.26", "huggingface-hub>=0.30"]
+
+[project.optional-dependencies]
+train = ["datasets>=3", "pyarrow>=18"]
+serve = ["fastapi>=0.115", "uvicorn>=0.30"]
+test = ["pytest>=8"]
+
+[project.scripts]
+openjev = "openjev.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
